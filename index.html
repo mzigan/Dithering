@@ -6,9 +6,10 @@
     <style> body {padding: 0; margin: 0;} </style>
   </head>
   <body>
-    Number Possible Values:<input type="range" min="1" max="255" value="4" onchange="run(document.getElementById('fil'))" id="factor">
-    <input type="file" accept="image/*" onchange='run(this)' id='fil'>
+    Number Possible Values(1-255):<input type="range" min="1" max="255" value="4" onChange="run(document.getElementById('fil'))" id="factor">
+    <input type="file" accept="image/*" onChange='run(this)' id='fil'>
     <button onclick="saveDith()">Save Image</button><br>
+    <canvas id="dithCanvas"></canvas><br>
     <canvas id="canvas"></canvas>
   </body>
 </html>

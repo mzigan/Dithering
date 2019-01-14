@@ -1,22 +1,31 @@
-function run(imgFile) {
-  //create canvas
-  let canvas=document.getElementById('canvas');
-  let ctx=canvas.getContext('2d');
+//global variables to biund to the proper canvases
+let canvas;
+let ctx;
+let canv;
+let ctx2;
 
+function run(imgFile) {
+  canvas=document.getElementById('canvas');
+  ctx=canvas.getContext('2d');
+
+  canv=document.getElementById('dithCanvas');
+  ctx2=canv.getContext('2d');
   //create image object
   let img=new Image();
   img.onload=function() {
     //when it loads size canvas
-    canvas.width=2*img.width;
+    canvas.width=img.width;
     canvas.height=img.height;
-    //draw image unalterd on canvas
+    //when it loads size canvas
+    canv.width=img.width;
+    canv.height=img.height;
+    //draw image unalterd on proper canvas
     ctx.drawImage(img,0,0);
     //get the image data to apply dither to
     let imData=ctx.getImageData(0,0,img.width,img.height);
-    //draw dithered version on canvas
+    //draw dithered version on proper canvas
     let test=floydSteinberg(imData);
-    console.log(test);
-    ctx.putImageData(test,img.width,0);
+    ctx2.putImageData(test,0,0);
   }
 
   //read the file
@@ -29,19 +38,7 @@ function run(imgFile) {
 }
 
 function saveDith(){
-  //get image want to save from canvas
-  let canvas=document.getElementById('canvas')
-  let imData=canvas.getContext('2d').getImageData(canvas.width/2,0,canvas.width/2,canvas.height);
-  console.log(imData);
-  //create new canvas to put image data onto then save
-  let canv=document.createElement('canvas');
-  let ctx=canv.getContext('2d');
-  //size canvas
-  canv.width=imData.width;
-  canv.height=imData.height;
-  //draw dithered image on teh canvas
-  ctx.putImageData(imData,0,0);
-  //save the canvas as png
+  //save the dithered canvas as png
   canv.toBlob(function(blob){
     let tes=window.URL.createObjectURL(blob);
     let downloadElement = document.createElement('a');
